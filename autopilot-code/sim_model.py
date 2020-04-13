@@ -1,23 +1,7 @@
-# python standard libraries
-import os
-import re
-import random
-import fnmatch
-import datetime
-import pickle
 
-
-import matplotlib.pyplot as plt
-
-# data processing
 import numpy as np
-import pandas as pd
+from keras.models import load_model
 import cv2
-
-def my_imread(image_path):
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image
 
 def detect_line_segments(image):
     # tuning min_threshold, minLineLength, maxLineGap is a trial and error process by hand
@@ -72,13 +56,16 @@ def average_slope_intercept(image, line_segments):
             slope = fit[0]
             intercept = fit[1]
 
+
+
             if slope < 0:
                 if x1 < left_region_boundary and x2 < left_region_boundary:
                     left_fit.append((slope, intercept))
             else:
                 if x1 > right_region_boundary and x2 > right_region_boundary:
                     right_fit.append((slope, intercept))
-
+    image_x = display_lines(image, ver_lines)
+    cv2.imshow('vertical lines', image_x)
     left_fit_average = np.average(left_fit, axis=0)
     if len(left_fit) > 1:
         lane_lines.append(make_points(image, left_fit_average))
@@ -94,13 +81,13 @@ def display_lines(image, lines, line_color=(255, 255, 255), line_width=3):
         for line in lines:
             for x1, y1, x2, y2 in line:
                 cv2.line(line_image, (x1, y1), (x2, y2), line_color, line_width)
-    # cv2.imshow('line_image', line_image)
+    cv2.imshow('line_image', line_image)
     line_image = cv2.addWeighted(image, 1, line_image, 0.5, 1)
     return line_image
 
 def img_preprocess(image):
     height, _, _ = image.shape
-    image = image[int(height / 2):, :, :]  # remove top third of the image, as it is not relevant for lane following
+    image = image[int(height / 2):, :, :]  # remove top half of the image, as it is not relevant for lane following
     image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)  # Nvidia model said it is best to use YUV color space
     image = cv2.GaussianBlur(image, (3, 3), 0)  # Blurs image
     #cv2.imshow('image', image)
@@ -117,32 +104,15 @@ def img_preprocess(image):
     return image
 
 def main():
-    np.set_printoptions(formatter={'float_kind': lambda x: "%.4f" % x})
-    pd.set_option('display.width', 300)
-    pd.set_option('display.float_format', '{:,.4f}'.format)
-    pd.set_option('display.max_colwidth', 200)
+    model = load_model('lane_navigation_check_pre.h5')
 
-    data_dir = 'objects'
-    file_list = os.listdir(data_dir)
-    image_paths = []
-    steering_angles = []
-    car_speed = []
-    pattern = "*.png"
+    # replace image with simulation frames
+    preprocessed = img_preprocess(image)
+    X = np.asarray([preprocessed]) # adds batch dimensions
+    prediction = model.predict(X)
 
-    for filename in file_list:
-        if fnmatch.fnmatch(filename, pattern):
-            image_paths.append(os.path.join(data_dir, filename))
-            filename_split = re.split('[_.]', filename)
-            angle = int(filename_split[1])  # 092 part of video01_143_092.png is the angle. 90 is go straight
-            speed = int(filename_split[2])
-            steering_angles.append(angle)
-            car_speed.append(speed)
-
-    for image_path in file_list:
-        image = my_imread(os.path.join(data_dir, image_path))
-        processed_image = img_preprocess(image)
-        cv2.imwrite('objects(YUV)/' + image_path, processed_image)
-
+    angle = prediction[0]
+    speed = prediction[1]
 
 if __name__ == '__main__':
     main()

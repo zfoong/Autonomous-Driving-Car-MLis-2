@@ -3,21 +3,72 @@ import os
 import re
 import random
 import fnmatch
-import datetime
-import pickle
+
 
 
 import matplotlib.pyplot as plt
 
 # data processing
 import numpy as np
-import pandas as pd
+from sklearn.metrics import mean_squared_error, r2_score
 import cv2
+from imgaug import augmenters as img_aug
+
+from keras.models import load_model
 
 def my_imread(image_path):
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     return image
+
+def zoom(image):
+    zoom = img_aug.Affine(scale=(1, 1.3))  # zoom from 100% (no zoom) to 130%
+    image = zoom.augment_image(image)
+    return image
+
+def pan(image):
+    # pan left / right / up / down about 10%
+    pan = img_aug.Affine(translate_percent= {"x" : (-0.1, 0.1), "y": (-0.1, 0.1)})
+    image = pan.augment_image(image)
+    return image
+
+
+def adjust_brightness(image):
+    # increase or decrease brightness by 30%
+    brightness = img_aug.Multiply((0.7, 1.3))
+    image = brightness.augment_image(image)
+    return image
+
+
+def blur(image):
+    kernel_size = random.randint(1, 5)  # kernel larger than 5 would make the image way too blurry
+    image = cv2.blur(image, (kernel_size, kernel_size))
+
+    return image
+
+
+def random_flip(image, steering_angle):
+    is_flip = random.randint(0, 1)
+    if is_flip == 1:
+        # randomly flip horizon
+        image = cv2.flip(image, 1)
+        steering_angle = 180 - steering_angle
+
+    return image, steering_angle
+
+
+def random_augment(image, steering_angle):
+    if np.random.rand() < 0.5:
+        image = pan(image)
+    if np.random.rand() < 0.5:
+        image = zoom(image)
+    if np.random.rand() < 0.5:
+        image = blur(image)
+    if np.random.rand() < 0.5:
+        image = adjust_brightness(image)
+    image, steering_angle = random_flip(image, steering_angle)
+
+    return image, steering_angle
 
 def detect_line_segments(image):
     # tuning min_threshold, minLineLength, maxLineGap is a trial and error process by hand
@@ -78,7 +129,8 @@ def average_slope_intercept(image, line_segments):
             else:
                 if x1 > right_region_boundary and x2 > right_region_boundary:
                     right_fit.append((slope, intercept))
-
+    image_x = display_lines(image, ver_lines)
+    # cv2.imshow('vertical lines', image_x)
     left_fit_average = np.average(left_fit, axis=0)
     if len(left_fit) > 1:
         lane_lines.append(make_points(image, left_fit_average))
@@ -86,7 +138,8 @@ def average_slope_intercept(image, line_segments):
     right_fit_average = np.average(right_fit, axis=0)
     if len(right_fit) > 1:
         lane_lines.append(make_points(image, right_fit_average))
-    return lane_lines
+    return ver_lines #lane_lines
+
 
 def display_lines(image, lines, line_color=(255, 255, 255), line_width=3):
     line_image = np.zeros_like(image)
@@ -116,33 +169,79 @@ def img_preprocess(image):
     # image = image / 255  # normalizing
     return image
 
-def main():
-    np.set_printoptions(formatter={'float_kind': lambda x: "%.4f" % x})
-    pd.set_option('display.width', 300)
-    pd.set_option('display.float_format', '{:,.4f}'.format)
-    pd.set_option('display.max_colwidth', 200)
+def image_data_generator(image_paths, angle_speed, batch_size, is_training):
+    while True:
+        batch_images = []
+        batch_angles_speeds = []
 
-    data_dir = 'objects'
+        for i in range(batch_size):
+            random_index = random.randint(0, len(image_paths) - 1)
+            image_path = image_paths[random_index]
+            image = plt.imread(image_paths[random_index])
+            steering_angle = angle_speed[0, random_index]
+            if is_training:
+                #training: augment image
+                image, steering_angle = random_augment(image, steering_angle)
+
+            image = img_preprocess(image)
+            batch_images.append(image)
+            batch_angles_speeds.append([steering_angle, angle_speed[1, random_index]])
+
+        yield (np.asarray(batch_images), np.array(batch_angles_speeds))
+
+
+
+def summarize_prediction(Y_true, Y_pred):
+    mse = mean_squared_error(Y_true, Y_pred)
+    r_squared = r2_score(Y_true, Y_pred)
+    print(f'mse       = {mse:.2}')
+    print(f'r_squared = {r_squared:.2%}')
+
+def predict_and_summarize(X, Y, model):
+    Y_pred = model.predict(X)
+    summarize_prediction(Y, Y_pred)
+    return Y_pred
+
+def main():
+    data_dir = 'training_data_no_objects'
     file_list = os.listdir(data_dir)
     image_paths = []
     steering_angles = []
     car_speed = []
+    angles_speed = []
     pattern = "*.png"
 
-    for filename in file_list:
-        if fnmatch.fnmatch(filename, pattern):
-            image_paths.append(os.path.join(data_dir, filename))
-            filename_split = re.split('[_.]', filename)
-            angle = int(filename_split[1])  # 092 part of video01_143_092.png is the angle. 90 is go straight
-            speed = int(filename_split[2])
-            steering_angles.append(angle)
-            car_speed.append(speed)
+    # for filename in file_list:
+    #     if fnmatch.fnmatch(filename, pattern):
+    #         image_paths.append(os.path.join(data_dir, filename))
+    #         filename_split = re.split('[_.]', filename)
+    #         angle = int(filename_split[1])  # 092 part of video01_143_092.png is the angle. 90 is go straight
+    #         speed = int(filename_split[2])
+    #         steering_angles.append(angle)
+    #         car_speed.append(speed)
+    #         angles_speed.append([angle, speed])
 
-    for image_path in file_list:
-        image = my_imread(os.path.join(data_dir, image_path))
-        processed_image = img_preprocess(image)
-        cv2.imwrite('objects(YUV)/' + image_path, processed_image)
+    model = load_model('lane_navigation_check_pre.h5')
 
+    #image_path = image_paths[7]
+    image = plt.imread(os.path.join(data_dir, '1583931148990_90_0.png'))
+
+    preprocessed = img_preprocess(image)
+    X = np.asarray([preprocessed])
+    # cv2.imshow('image', preprocessed)
+    steering_angle = model.predict(X)
+
+    angles_speed = np.transpose(np.array(angles_speed))
+
+    n_tests = np.shape(angles_speed)[1]
+    X_test, y_test = next(image_data_generator(image_paths, angles_speed, n_tests, False))
+    y_pred = predict_and_summarize(X_test, y_test, model)
+    angles_pred = y_pred[:, 0]
+
+    plt.scatter(y_test[:, 0], y_pred[:,0])
+    plt.show()
+    plt.scatter(y_test[:, 1], y_pred[:,1])
+    plt.show()
 
 if __name__ == '__main__':
     main()
