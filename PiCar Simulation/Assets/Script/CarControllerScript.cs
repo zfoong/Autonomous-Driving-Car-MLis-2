@@ -12,12 +12,17 @@ public class CarControllerScript : MonoBehaviour {
     public const int ANGLE_GAP = 5;
     public const int ANGLE = 5;
 
+    public bool selfDriving = false;
+    public AutoDrivingController adController;
+
+    public UIController uiController;
+
     public enum Speed
     {
         Back = -35,
         Stop = 0,
         Slow = 35,
-        Fast = 75
+        Fast = 50
     }
 
     public Speed currentSpeed;
@@ -56,32 +61,36 @@ public class CarControllerScript : MonoBehaviour {
         _transform.rotation = _quat;
     }
 
-    // Update is called once per frame
-    void Update () {
-        // Get input
+    private void GetInput()
+    {
         if (Input.GetKeyDown(KeyCode.W))
-        {
             currentSpeed = nextSpeed(currentSpeed, speedList);
-            Debug.Log("Current Speed is " + currentSpeed);
-        }
         else if (Input.GetKeyDown(KeyCode.S))
-        {
             currentSpeed = prevSpeed(currentSpeed, speedList);
-            Debug.Log("Current Speed is " + currentSpeed);
-        }
 
         if (Input.GetKeyDown(KeyCode.A))
-        {
             steeringAngle = Mathf.Max(MIN_ANGLE, steeringAngle -= ANGLE_GAP);
-        }
         else if (Input.GetKeyDown(KeyCode.D))
-        {
             steeringAngle = Mathf.Min(MAX_ANGLE, steeringAngle += ANGLE_GAP);
-        }
+    }
+
+    private void ReadInput()
+    {
+        currentSpeed = (Speed)adController.speed;
+        steeringAngle = adController.angle - 90;
+    }
+
+    // Update is called once per frame
+    void Update () {
+
+        if (selfDriving)
+            ReadInput();
+        else
+            GetInput();
 
         //Steer
-        frontPassengerW.steerAngle = (float)steeringAngle;
-        frontDriverW.steerAngle = (float)steeringAngle;
+        frontPassengerW.steerAngle = steeringAngle;
+        frontDriverW.steerAngle = steeringAngle;
 
         // Movement
         Vector3 forwardForce = transform.forward * (float)currentSpeed * REAL_WORLD_FACTOR;
@@ -90,6 +99,7 @@ public class CarControllerScript : MonoBehaviour {
         //rigidbody.AddForce(transform.forward * (float)currentSpeed * REAL_WORLD_FACTOR, ForceMode.VelocityChange);
 
         UpdateWheelPoses();
+        updateUIController();
     }
 
     private Speed prevSpeed(Speed _currentSpeed, List<Speed> _speedList)
@@ -104,5 +114,18 @@ public class CarControllerScript : MonoBehaviour {
         int index = _speedList.IndexOf(_currentSpeed);
         if (index < _speedList.Count - 1) { return _speedList[index + 1]; }
         else { return _currentSpeed; }
+    }
+
+    public void ToggleSelfDriving()
+    {
+        selfDriving = !selfDriving;
+        currentSpeed = Speed.Stop;
+        steeringAngle = 0;
+    }
+
+    public void updateUIController()
+    {
+        uiController.setCurrentAngleText(steeringAngle + 90);
+        uiController.setCurrentSpeedText((int)currentSpeed);
     }
 }

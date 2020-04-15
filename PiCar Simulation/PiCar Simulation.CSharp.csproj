@@ -85,12 +85,24 @@
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <None Include="Assets\Script\AutoDrivingController.cs.meta" />
+    <None Include="Assets\Script\CarControllerScript.cs.meta" />
+    <None Include="Assets\Script\DragObject.cs.meta" />
+    <None Include="Assets\Script\SpawnController.cs.meta" />
+    <None Include="Assets\Script\TrackManager.cs.meta" />
+    <None Include="Assets\Script\UIController.cs.meta" />
+    <None Include="Assets\Script\ViewStreamManager.cs.meta" />
+    <None Include="Assets\Script\WheelCarController.cs.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Script\AutoDrivingController.cs" />
     <Compile Include="Assets\Script\CarControllerScript.cs" />
     <Compile Include="Assets\Script\DragObject.cs" />
+    <Compile Include="Assets\Script\SettingObject.cs" />
     <Compile Include="Assets\Script\SpawnController.cs" />
     <Compile Include="Assets\Script\TrackManager.cs" />
+    <Compile Include="Assets\Script\UIController.cs" />
     <Compile Include="Assets\Script\ViewStreamManager.cs" />
     <Compile Include="Assets\Script\WheelCarController.cs" />
   </ItemGroup>
