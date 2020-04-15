@@ -239,7 +239,7 @@ def main():
     pd.set_option('display.float_format', '{:,.4f}'.format)
     pd.set_option('display.max_colwidth', 200)
 
-    data_dir = 'training_data_no_objects'
+    data_dir = 'training_data'
     file_list = os.listdir(data_dir)
     image_paths = []
     steering_angles = []
@@ -268,11 +268,11 @@ def main():
     print(model.summary())
 
     # saves the model weights after each epoch if the validation loss decreased
-    checkpoint_callback = tf.keras.callbacks.ModelCheckpoint('lane_navigation_check_pre.h5')
+    checkpoint_callback = tf.keras.callbacks.ModelCheckpoint('lane_navigation_check_LD_Objects.h5')
 
-    history = model.fit_generator(image_data_generator(X_train, y_train, batch_size=300, is_training=True),
+    history = model.fit_generator(image_data_generator(X_train, y_train, batch_size=100, is_training=True),
                                   steps_per_epoch=300,
-                                  epochs=10,
+                                  epochs=15,
                                   validation_data=image_data_generator(X_valid, y_valid, batch_size=100, is_training= False),
                                   validation_steps=200,
                                   verbose=1,
@@ -280,7 +280,7 @@ def main():
                                   callbacks=[checkpoint_callback])
 
     # always save model output as soon as model finishes training
-    model.save('lane_navigation_final_pre.h5')
+    model.save('lane_navigation_final_LD_Objects.h5')
 
     plt.plot(history.history['loss'], color='blue')
     plt.plot(history.history['val_loss'], color='red')
