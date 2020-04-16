@@ -1,7 +1,9 @@
-
+import os
 import numpy as np
 from keras.models import load_model
 import cv2
+
+import matplotlib.pyplot as plt
 
 def detect_line_segments(image):
     # tuning min_threshold, minLineLength, maxLineGap is a trial and error process by hand
@@ -65,7 +67,6 @@ def average_slope_intercept(image, line_segments):
                 if x1 > right_region_boundary and x2 > right_region_boundary:
                     right_fit.append((slope, intercept))
     image_x = display_lines(image, ver_lines)
-    cv2.imshow('vertical lines', image_x)
     left_fit_average = np.average(left_fit, axis=0)
     if len(left_fit) > 1:
         lane_lines.append(make_points(image, left_fit_average))
@@ -81,7 +82,6 @@ def display_lines(image, lines, line_color=(255, 255, 255), line_width=3):
         for line in lines:
             for x1, y1, x2, y2 in line:
                 cv2.line(line_image, (x1, y1), (x2, y2), line_color, line_width)
-    cv2.imshow('line_image', line_image)
     line_image = cv2.addWeighted(image, 1, line_image, 0.5, 1)
     return line_image
 
@@ -105,14 +105,15 @@ def img_preprocess(image):
 
 def main():
     model = load_model('lane_navigation_check_pre.h5')
+    model.summary()
+    image = plt.imread(os.path.join('data', 'LiveSteamOutput.png'))
 
-    # replace image with simulation frames
     preprocessed = img_preprocess(image)
     X = np.asarray([preprocessed]) # adds batch dimensions
     prediction = model.predict(X)
-
-    angle = prediction[0]
-    speed = prediction[1]
+    print(prediction)
+    angle = prediction.item(0)
+    speed = prediction.item(1)
 
 if __name__ == '__main__':
     main()

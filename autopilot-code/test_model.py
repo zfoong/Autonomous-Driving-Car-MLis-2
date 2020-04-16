@@ -203,7 +203,7 @@ def predict_and_summarize(X, Y, model):
     return Y_pred
 
 def main():
-    data_dir = 'training_data_no_objects'
+    data_dir = 'data'
     file_list = os.listdir(data_dir)
     image_paths = []
     steering_angles = []
@@ -224,15 +224,16 @@ def main():
     model = load_model('lane_navigation_check_pre.h5')
 
     #image_path = image_paths[7]
-    image = plt.imread(os.path.join(data_dir, '1583931148990_90_0.png'))
-
+    image = plt.imread(os.path.join(data_dir, '1581705535493_90_35.png'))
+    
     preprocessed = img_preprocess(image)
     X = np.asarray([preprocessed])
     # cv2.imshow('image', preprocessed)
     steering_angle = model.predict(X)
 
     angles_speed = np.transpose(np.array(angles_speed))
-
+    print(angles_speed)
+    print(angles_speed.shape)
     n_tests = np.shape(angles_speed)[1]
     X_test, y_test = next(image_data_generator(image_paths, angles_speed, n_tests, False))
     y_pred = predict_and_summarize(X_test, y_test, model)

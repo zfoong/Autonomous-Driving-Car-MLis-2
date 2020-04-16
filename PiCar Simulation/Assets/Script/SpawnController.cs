@@ -13,6 +13,9 @@ public class SpawnController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (Camera.main == null)
+                return;
+
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

@@ -99,6 +99,8 @@
     <Compile Include="Assets\Script\AutoDrivingController.cs" />
     <Compile Include="Assets\Script\CarControllerScript.cs" />
     <Compile Include="Assets\Script\DragObject.cs" />
+    <Compile Include="Assets\Script\PiCarSceneManager.cs" />
+    <Compile Include="Assets\Script\RandomMovement.cs" />
     <Compile Include="Assets\Script\SettingObject.cs" />
     <Compile Include="Assets\Script\SpawnController.cs" />
     <Compile Include="Assets\Script\TrackManager.cs" />

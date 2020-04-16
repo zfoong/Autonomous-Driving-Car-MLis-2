@@ -3,6 +3,8 @@ PlayerPath?
 C:/Users/zfoong/Desktop/piCar/piCar Sim Build/PiCar Simulation.exe
 SceneListBegin?
 Assets/simulation_1_scene.unity
+Assets/simulation_2_scene.unity
+Assets/simulation_3_scene.unity
 SceneListEnd?
 a1f19ad47d3094e235f21b74dfc423a8 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessLayer
 726fcf7961cbb4108aa5be5e55b8c8bf Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.ColorGrading
@@ -179,3 +181,5 @@ ac6acd886c54c48c599ab5fed5781ea7 Unity.Postprocessing.Runtime.dll:UnityEngine.Re
 8649814970b42d345b89944b862453cc Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.DragObject
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.SpawnController
+35b38100820ec44145cd3b4f300e950e Assembly-CSharp.dll:.RandomMovement
+71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PiCarSceneManager
