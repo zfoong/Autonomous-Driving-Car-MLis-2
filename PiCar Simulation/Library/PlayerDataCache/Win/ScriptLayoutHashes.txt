@@ -126,6 +126,7 @@ d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.Spa
 0ad2a365115316064b31763fa258b9cf Assembly-CSharp.dll:.ViewStreamManager
 7e6ed836cbaa230e56d6a2bbae1b9bb5 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessEffectSettings
 b8a5e8091ab0b8861d2add371082c5e0 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
+71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PiCarSceneManager
 61b9d9b6f4b6a222dfea8b131b3d3227 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.ChromaticAberration
 01dba01c96197e0cdd0aae6ecf023fb4 Assembly-CSharp.dll:.CarControllerScript
 b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
@@ -182,4 +183,3 @@ ac6acd886c54c48c599ab5fed5781ea7 Unity.Postprocessing.Runtime.dll:UnityEngine.Re
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.DragObject
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.SpawnController
 35b38100820ec44145cd3b4f300e950e Assembly-CSharp.dll:.RandomMovement
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PiCarSceneManager
