@@ -35,6 +35,12 @@ public class CarControllerScript : MonoBehaviour {
     public Transform frontDriverT, frontPassengerT;
     public Transform rearDriverT, rearPassengerT;
 
+    public List<GameObject> raycastObjectList;
+
+    public float objDis = 0;
+    public Vector3 objSize = new Vector3();
+    
+
     // Use this for initialization
     void Start () {
         currentSpeed = Speed.Stop;
@@ -100,6 +106,8 @@ public class CarControllerScript : MonoBehaviour {
 
         UpdateWheelPoses();
         updateUIController();
+
+        CheckForHit();
     }
 
     private Speed prevSpeed(Speed _currentSpeed, List<Speed> _speedList)
@@ -127,5 +135,42 @@ public class CarControllerScript : MonoBehaviour {
     {
         uiController.setCurrentAngleText(steeringAngle + 90);
         uiController.setCurrentSpeedText((int)currentSpeed);
+    }
+
+    void CheckForHit()
+    {
+        RaycastHit objectHit;
+        Transform tf = null;
+        float minDis = Mathf.Infinity;
+        foreach (GameObject go in raycastObjectList)
+        {
+            Transform raycastTransform = go.transform;
+            float distance = 1;
+            if (Physics.Raycast(raycastTransform.position, raycastTransform.forward, out objectHit, distance))
+            {
+                if (objectHit.transform.tag == "Grabable")
+                {
+                    if(objectHit.distance < minDis)
+                    {
+                        minDis = objectHit.distance;
+                        tf = objectHit.transform;
+                    }
+                }
+            }
+            Debug.DrawRay(raycastTransform.position, raycastTransform.forward * distance, Color.green);
+        }
+
+        if (tf != null)
+        {
+            Vector3 co = tf.GetComponent<BoxCollider>().size;
+            Vector3 size = new Vector3(co.x * tf.localScale.x, co.y * tf.localScale.y, co.z * tf.localScale.z);
+            objDis = minDis;
+            objSize = size;
+        }
+        else
+        {
+            objDis = 0;
+            objSize = new Vector3();
+        }
     }
 }

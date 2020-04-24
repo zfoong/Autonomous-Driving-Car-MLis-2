@@ -65,8 +65,17 @@ public class ViewStreamManager : MonoBehaviour
             {
                 byte[] data = CamCapture();
                 int steerAngle = car.steeringAngle + 90;
+                Vector3 objSize = car.objSize;
+                float objDis = car.objDis;
                 long msecNow = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                string imageName = msecNow + "_" + steerAngle + "_" + (int)car.currentSpeed + ".png";
+                string imageName = msecNow + "_" + 
+                                   steerAngle + "_" + 
+                                   (int)car.currentSpeed + "_" + 
+                                   objSize.x + "_" + 
+                                   objSize.y + "_" + 
+                                   objSize.z + "_" + 
+                                   objDis + 
+                                   ".png";
                 SaveImage(data, dataFolderName, imageName);
             }
             if (selfDriveFlag)

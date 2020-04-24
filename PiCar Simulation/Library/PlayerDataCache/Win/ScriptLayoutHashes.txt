@@ -1,6 +1,6 @@
 Win
 PlayerPath?
-C:/Users/zfoong/Desktop/piCar/piCar Sim Build/PiCar Simulation.exe
+C:/Users/zfoong/Desktop/piCar/piCar Sim Build obj_detection/PiCar Simulation.exe
 SceneListBegin?
 Assets/simulation_1_scene.unity
 Assets/simulation_2_scene.unity
@@ -128,7 +128,7 @@ d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.Spa
 b8a5e8091ab0b8861d2add371082c5e0 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PiCarSceneManager
 61b9d9b6f4b6a222dfea8b131b3d3227 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.ChromaticAberration
-01dba01c96197e0cdd0aae6ecf023fb4 Assembly-CSharp.dll:.CarControllerScript
+e42d92d26d93abc11c9ae384afb3df9a Assembly-CSharp.dll:.CarControllerScript
 b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 4ab8ed47ea0468b61bafb62d798aa981 Assembly-CSharp.dll:.WheelCarController
 d6fc8d3165070298511ec776ea575626 Unity.Postprocessing.Runtime.dll:UnityEngine.Rendering.PostProcessing.PostProcessResources
