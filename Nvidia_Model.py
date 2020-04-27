@@ -124,10 +124,8 @@ def nvidia_model():
     model.add(Dense(120, activation='elu', name='dense_1'))
     model.add(Dense(100, activation='elu', name='dense_2'))
     model.add(Dense(50, activation='elu', name='dense_3'))
-    #model.add(Dense(25, activation='elu', name='dense_4'))
     model.add(Dense(10, activation='elu', name='dense_5'))
-    model.add(Dropout(0.1))
-
+   
     # output layer: turn angle (from 45-135, 90 is straight, <90 turn left, >90 turn right)
     model.add(Dense(2, activation='linear', name='output'))
 
