@@ -1,7 +1,8 @@
 # Autonomous-Driving-Car-MLis-2
-MLiS II Project - Programming an Autonomous Driving Car
 
 ## Group Information
+
+PENDING
 
 ## Overview of Project
 
@@ -18,15 +19,15 @@ PiCar Simulation are developed using Unity, and scripts are written in C#. Model
 ![Screen capture of PiCar Simulation](/images/sim-snapshot.PNG)   
 ![Screen capture of PiCar Simulation](/images/snapshot-sim-just-in-case.PNG)
 
-Capabilityies of PiCar Simulation
--Recording data​
--Enable self-driving mode​
--Configure camera angle​
--Configure image capture interval​
--Switch between tracks​
--Switch between scenes​
--Ability to configure environment​
--Spawning object
+Capabilities of PiCar Simulation
+- Recording data​
+- Enable self-driving mode​
+- Configure camera angle​
+- Configure image capture interval​
+- Switch between tracks​
+- Switch between scenes​
+- Ability to configure environment​
+- Spawning object
 
 ## Simulation Setup Guide
 
@@ -37,20 +38,20 @@ Capabilityies of PiCar Simulation
 
 ## Simulation User Guide
 
-'W', 'S' to control speed
-'A', 'D' to control steering angle
-'R' to start recording simulation data (data are saved in \PiCar Simulation_Data\Image Data)
-Hold Left Mouse Button to pick up object
-'Q' to rotate object
+- 'W', 'S' to control speed
+- 'A', 'D' to control steering angle
+- 'R' to start recording simulation data (data are saved in \PiCar Simulation_Data\Image Data)
+- Hold Left Mouse Button to pick up object
+- 'Q' to rotate object
 
-Click 'Next Scene' to switch scene (currently contains 3 scenes)
-Click 'Next Track' to switch track (currently contains 5 tracks)
-Click 'Toggle Self Driving' button to start autonomous driving (refers to below section to setup)
-Click 'Toggle Camera' button to switch view
-Click 'Spawn Menu' button to spawn object in drop down (Spawning multiple objects at once will cause object to fall)
+- Click 'Next Scene' to switch scene (currently contains 3 scenes)
+- Click 'Next Track' to switch track (currently contains 5 tracks)
+- Click 'Toggle Self Driving' button to start autonomous driving (refers to below section to setup)
+- Click 'Toggle Camera' button to switch view
+- Click 'Spawn Menu' button to spawn object in drop down (Spawning multiple objects at once will cause object to fall)
 
-Drag 'Camera Angle' slider to change camera angle
-Drag 'Time Interval' slider to change rate of recorded data being save per second, also affect the output rate of stream view for self driving capability. (default is 1 image per second)
+- Drag 'Camera Angle' slider to change camera angle
+- Drag 'Time Interval' slider to change rate of recorded data being save per second, also affect the output rate of stream view for self driving capability. (default is 1 image per second)
 
 ## Setup for Self-Driving Model in simulation
 
