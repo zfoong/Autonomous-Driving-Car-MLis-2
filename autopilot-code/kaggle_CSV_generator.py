@@ -12,7 +12,7 @@ def round_to(x, base=5):
 def main():
     data_dir = 'test_data'
     file_list = os.listdir(data_dir)
-    model = load_model('lane_navigation_final_LD_Objects.h5')
+    model = load_model('model.h5')
     predictions = []
     image_id = []
 
@@ -31,8 +31,12 @@ def main():
 
     output.angle = (round_to(output.angle) - 50)/80
     output.speed = round((output.speed - 0)/35)
+    
+    output.loc[output['speed'] < 0, 'speed'] = 0
+    output.loc[output['speed'] > 1, 'speed'] = 1
+    
     output.sort_values(by=['image_id'], inplace=True)
-    output.to_csv('LD-Objects-Submission.csv', index=False)
+    output.to_csv('Submission.csv', index=False)
 
 if __name__ == '__main__':
     main()
