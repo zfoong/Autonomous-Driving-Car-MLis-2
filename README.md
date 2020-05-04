@@ -2,7 +2,11 @@
 
 ## Group Information
 
-PENDING
+Luke Camilleri​
+
+Ewan Vaughan
+
+Tham Yik Foong​
 
 ## Overview of Project
 
@@ -65,8 +69,22 @@ the summary of the working mechanism of this feature are shown in below figure.
 
 ## Neural Network Model Overview
 
-PENDING
+Starting out our model based on the CNN architecture proposed by ![Architecture of our neural network](https://arxiv.org/pdf/1604.07316.pdf), we have modify the network to better suit our task on classifying steering angle and speed.
+![Architecture of our neural network](/images/NN-architecture.png)   
+
+## Neural Network Configuration Setting
+
+Default Hyper-parameter setting
+
+| Hyper-parameter | Default Value |
+| --- | --- |
+| Epoch | 20 |
+| Batch Size | 100 |
+| Learning Rate | 0.001 |
+| Input Layer Size | W:200, H:66 |
+| Steps per Epoch | 300 |
 
 ## Result
 
-PENDING
+Result of our trained model are shown in below video. Note that the video is speed up.
+[video](https://youtu.be/U9EwczZAw5o)
