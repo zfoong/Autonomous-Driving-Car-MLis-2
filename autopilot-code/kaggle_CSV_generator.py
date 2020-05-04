@@ -31,8 +31,12 @@ def main():
 
     output.angle = (round_to(output.angle) - 50)/80
     output.speed = round((output.speed - 0)/35)
+    
+    output.loc[output['speed'] < 0, 'speed'] = 0
+    output.loc[output['speed'] > 1, 'speed'] = 1
+    
     output.sort_values(by=['image_id'], inplace=True)
-    output.to_csv('LD-Objects-Submission.csv', index=False)
+    output.to_csv('Submission.csv', index=False)
 
 if __name__ == '__main__':
     main()
