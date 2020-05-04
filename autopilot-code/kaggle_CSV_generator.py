@@ -12,7 +12,7 @@ def round_to(x, base=5):
 def main():
     data_dir = 'test_data'
     file_list = os.listdir(data_dir)
-    model = load_model('lane_navigation_final_LD_Objects.h5')
+    model = load_model('model.h5')
     predictions = []
     image_id = []
 
