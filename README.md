@@ -2,11 +2,11 @@
 
 ## Group Information
 
-Luke Camilleri​
+Luke Camilleri 
 
-Ewan Vaughan
+Ewan Vaughan 
 
-Tham Yik Foong​
+Tham Yik Foong 
 
 ## Overview of Project
 
@@ -69,7 +69,7 @@ the summary of the working mechanism of this feature are shown in below figure.
 
 ## Neural Network Model Overview
 
-Starting out our model based on the CNN architecture proposed by ![Architecture of our neural network](https://arxiv.org/pdf/1604.07316.pdf), we have modify the network to better suit our task on classifying steering angle and speed.
+Starting out our model based on the CNN architecture proposed by [Bojarski et al](https://arxiv.org/pdf/1604.07316.pdf), we have modify the network to better suit our task on classifying steering angle and speed.
 ![Architecture of our neural network](/images/NN-architecture.png)   
 
 ## Neural Network Configuration Setting
